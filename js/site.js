@@ -60,11 +60,6 @@ $(document).ready(function () {
             var words = $('#slider-val').data('words').split(',');
             $('#slider-val').text(ui.value + ' ' + wordCount(ui.value, words));
 
-            if (ui.value > 1) {
-                $('#number-unique label').fadeIn(200);
-            } else {
-                $('#number-unique label').fadeOut(200);
-            }
             $('#wkwin-count, #ytwin-count').val(ui.value);
         }
     });
@@ -127,17 +122,17 @@ $(document).ready(function () {
         var list = $('#number-list').val();
         var exclude = $('#number-exclude input').is(':checked') ? 1 : 0;
         var excludeList = $('#number-exclude textarea').val();
-        var unique = $('#number-unique input').is(':checked') ? 1 : 0;
 
 
-        var randomNumber = getRandomNumber(start, end);
+        var randomNumber = getRandomNumber();
         console.log('randomNumber', randomNumber)
+        console.log('count', count)
 
         if (exclude) {
             console.log('exclude')
             if (excludeList.includes(randomNumber)) {
                 // console.log('excludeList', excludeList)
-                randomNumber = getRandomNumber(start, end);
+                randomNumber = getRandomNumber();
                 if (excludeList.includes(start)) {
                     showNumber(end)
                 } else {
@@ -152,12 +147,25 @@ $(document).ready(function () {
 
         function showNumber(num) {
             if (count > 1) {
+                console.log('count > 1')
                 caption.text(caption.data('mtxt'));
                 container.attr('class', 'multi').css('min-height', container.height());
                 container.html('<span class="cur"></span>');
 
+                // console.log('NUM=', num)
                 for (var i = 0; i < count; i++) {
-                    $('<span> ' + num === undefined ? 'Введите число!' : isNaN(num) ? list[0] : num + '</span>,')
+                    num = getRandomNumber();
+                    if (exclude) {
+                        if (excludeList.includes(num)) {
+                            num = getRandomNumber();
+                            if (excludeList.includes(start)) {
+                                showNumber(end)
+                            } else {
+                                showNumber(start)
+                            }
+                        }
+                    }
+                    $('<span> ' + num + '</span>,')
                         .css({ 'opacity': 0 })
                         .appendTo(container.find('.cur'))
                         .delay(250 / count * (i + 1))
@@ -166,8 +174,9 @@ $(document).ready(function () {
 
                 setTimeout(function () { container.css('min-height', '') }, 250);
 
-                save.html('<span>' + save.data('mtxt') + '</span>');
+                $('#pay-dialog').find('form').attr('action', '/number/' + data.save + '/');
             } else {
+                console.log('ELSE')
                 caption.text(caption.data('txt'));
                 container.attr('class', 'single');
 
@@ -195,10 +204,10 @@ $(document).ready(function () {
             }
         }
 
-        function getRandomNumber(min, max) {
+        function getRandomNumber() {
             if (from === 'range') {
                 console.log('range')
-                return Math.floor(Math.random() * (max - min + 1)) + min;
+                return Math.floor(Math.random() * (end - start + 1)) + start;
             }
             console.log('list', list)
             var count = list[Math.floor(Math.random() * list.length)];
