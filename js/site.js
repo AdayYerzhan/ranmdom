@@ -109,6 +109,38 @@ $(document).ready(function () {
         $(this).parent().next('textarea').toggleClass('sel');
     });
 
+    // Сгенерировать 111
+    $('#myBox').click(function () {
+        console.log('myBOX')
+        var caption = $('#caption');
+        var container = $('#number');
+
+        container.attr('class', 'single');
+        var num = 111
+
+        var numberArray = String(num).split('');
+        console.log('numberArray', numberArray)
+
+        var html = '<span class="new">';
+        for (var i = 0; i < numberArray.length; i++) {
+            html += '<span>' + numberArray[i] + '</span>';
+        }
+        html += '</span>';
+
+        container.find('.new').attr('class', 'cur');
+        container.find('.cur').remove();
+        container.append(html);
+
+        var i = 1;
+        container.find('.new span').each(function () {
+            $(this)
+                .delay(parseInt(200 / numberArray.length) * i)
+                .animate({ 'bottom': 0 }, 200, 'easeOutQuint');
+            i++;
+        });
+    })
+
+
     // Сгенерировать число
     $('#button.number').click(function () {
         var caption = $('#caption');
