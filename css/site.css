@@ -512,6 +512,18 @@ input:invalid {
   user-select: none;
 }
 
+#myBox {
+  position: relative;
+  width: 16px;
+  height: 28px;
+  background: #11c84e;
+  right: 109px;
+  top: -33px;
+  background: none;
+  border: none;
+  z-index: 1;
+}
+
 #button:active,
 #button.active {
   background-position: left bottom;
@@ -972,28 +984,12 @@ input:invalid {
   background: #fff;
 }
 
-#number-unique {
-  height: 25px;
-}
-
 #number-exclude {
   margin-top: -3px;
 }
 
-#number-unique label {
-  display: none;
-}
-
 #number-exclude label {
   display: block;
-}
-
-#number-unique input,
-#number-exclude input {
-  position: relative;
-  top: -1px;
-  margin: 0 0 0 12px;
-  vertical-align: middle;
 }
 
 #number-save {
